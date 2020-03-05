@@ -22,7 +22,7 @@ def test_badurls():
         "just_a_file.com",
         "/usr/notinternet/ohno",
         "C:\\Windows\\offline",
-        "ftp://notawebserver/tastyfile.mkv"
+        "ftp://notawebserver/tastyfile.mkv",
     ]
 
     # assert not disc.is_url(url_1)
@@ -33,9 +33,9 @@ def test_badurls():
 
 def test_absolutepath():
     paths = [
-    "C:\\test\\",
-    "/unix/path/",
-    "Z://test//t",
+        "C:\\test\\",
+        "/unix/path/",
+        "Z://test//t",
     ]
 
     for p in paths:
@@ -44,9 +44,9 @@ def test_absolutepath():
 
 def test_badabspaths():
     paths = [
-    "sentence really",
-    "word",
-    "Https://arrr",
+        "sentence really",
+        "word",
+        "Https://arrr",
     ]
 
     for p in paths:

@@ -5,6 +5,7 @@ import time
 
 URL_REQUEST_DELAY_S = 5
 
+
 def is_url(location: str) -> bool:
     """Simple function checks if URL is valid and if it is a http or https URL.
 
@@ -36,6 +37,14 @@ def file_exists(location: str) -> bool:
 
 
 def url_accessable(location: str) -> bool:
+    """Uses requests.head to test existance of file without download.
+    Incurs a URL_REQUEST_DELAY_S (default 5) delay each time, 2s timeout.
+    
+    :param location: URL to test
+    :type location: str
+    :return: True or False
+    :rtype: bool
+    """
     try:
         requests.head(location, timeout=2)
     except IOError:

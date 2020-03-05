@@ -1,7 +1,18 @@
 from validator_collection import checkers
+import pathlib
+import requests
+import time
 
+URL_REQUEST_DELAY_S = 5
 
 def is_url(location: str) -> bool:
+    """Simple function checks if URL is valid and if it is a http or https URL.
+
+    :param location: Path
+    :type location: str
+    :return: True or False
+    :rtype: bool
+    """
     location = location.lower()
     if not checkers.is_url(location):
         return False
@@ -13,7 +24,11 @@ def is_url(location: str) -> bool:
 
 
 def is_absolute_path(location: str) -> bool:
-    pass
+    location = location.lower()
+    if not checkers.is_pathlike(location):
+        return False
+
+    return True
 
 
 def file_exists(location: str) -> bool:
@@ -21,4 +36,11 @@ def file_exists(location: str) -> bool:
 
 
 def url_accessable(location: str) -> bool:
-    pass
+    try:
+        requests.head(location, timeout=2)
+    except IOError:
+        return False
+    finally:
+        time.sleep(URL_REQUEST_DELAY_S)
+
+    return True

@@ -1,4 +1,5 @@
 from m3uqueue import discriminators as disc
+import pytest
 
 
 def test_goodurls():
@@ -31,16 +32,47 @@ def test_badurls():
 
 
 def test_absolutepath():
-    path_1 = "C:\\test\\"
-    path_2 = "/unix/path/"
-    path_3 = "Z://test//t"
+    paths = [
+    "C:\\test\\",
+    "/unix/path/",
+    "Z://test//t",
+    ]
 
-    assert disc.is_absolute_path(path_1)
-    assert disc.is_absolute_path(path_2)
-    assert disc.is_absolute_path(path_3)
+    for p in paths:
+        assert disc.is_absolute_path(p)
 
 
 def test_badabspaths():
-    path_1 = "Https://arrr"
-    path_2 = "sentence really"
-    path_3 = "word"
+    paths = [
+    "sentence really",
+    "word",
+    "Https://arrr",
+    ]
+
+    for p in paths:
+        res = disc.is_absolute_path(p)
+        print(p)
+        assert not res and res is not None
+
+
+# @pytest.mark.skip("Long due to URL access time waiting")
+def test_urlaccessable():
+    urls = [
+        "https://www.google.com/robots.txt",
+        "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+    ]
+
+    for url in urls:
+        assert disc.url_accessable(url) is True
+
+
+# @pytest.mark.skip("Long due to URL access time waiting")
+def test_badurlaccessable():
+    urls = [
+        "actually just a string",
+        "xml://somewherenonesense.com/notfile/txt",
+        "http://something.invalid/juicyfile.iso",
+    ]
+
+    for url in urls:
+        assert disc.url_accessable(url) is False

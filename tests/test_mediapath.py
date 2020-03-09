@@ -17,6 +17,23 @@ def test_pathtype():
     assert test_url.type == mediapath.MediaType.Url
 
 
+def test_statusurls():
+    existing = "https://www.google.com/robots.txt"
+    missing = "https://www.google.invalid/robots.txt"
+
+    test_1 = mediapath.MediaPath(existing)
+    test_2 = mediapath.MediaPath(missing)
+
+    assert test_1.status == mediapath.MediaStatus.Unknown
+    assert test_2.status == mediapath.MediaStatus.Unknown
+
+    test_1.update_status()
+    test_2.update_status()
+
+    assert test_1.status == mediapath.MediaStatus.Good
+    assert test_2.status == mediapath.MediaStatus.Bad
+
+
 def test_mediatypes():
     assert mediapath.MediaType.Path is not None
     assert mediapath.MediaType.Url is not None

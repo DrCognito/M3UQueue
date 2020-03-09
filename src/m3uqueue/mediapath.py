@@ -18,6 +18,7 @@ class MediaPath:
     def __init__(self, path: str = None):
         self.path = path
         self._type: MediaType = None
+        self.status = MediaStatus.Unknown
 
     @property
     def type(self):
@@ -30,3 +31,16 @@ class MediaPath:
             self._type = MediaType.Path
 
         return self._type
+
+    def update_status(self):
+        if self.type == MediaType.Url:
+            if disc.url_accessable(self.path):
+                self.status = MediaStatus.Good
+            else:
+                self.status = MediaStatus.Bad
+        elif self.type == MediaType.Path:
+            pass
+        else:
+            raise TypeError(f"Unkown MediaType {self._type}")
+
+        return self.status

@@ -18,18 +18,10 @@ def is_url(location: str) -> bool:
     if not checkers.is_url(location):
         return False
     # valid url but we want https or http
-    if location.startswith("http") or location.startswith("https"):
+    if location.startswith("http:") or location.startswith("https:"):
         return True
 
     return False
-
-
-def is_absolute_path(location: str) -> bool:
-    location = location.lower()
-    if not checkers.is_pathlike(location):
-        return False
-
-    return True
 
 
 def file_exists(location: str) -> bool:

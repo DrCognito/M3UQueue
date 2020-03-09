@@ -23,35 +23,12 @@ def test_badurls():
         "/usr/notinternet/ohno",
         "C:\\Windows\\offline",
         "ftp://notawebserver/tastyfile.mkv",
+        "httparr://notawebserver/tastyfile.mkv",
     ]
 
     # assert not disc.is_url(url_1)
     for i in urls:
         res = disc.is_url(i)
-        assert not res and res is not None
-
-
-def test_absolutepath():
-    paths = [
-        "C:\\test\\",
-        "/unix/path/",
-        "Z://test//t",
-    ]
-
-    for p in paths:
-        assert disc.is_absolute_path(p)
-
-
-def test_badabspaths():
-    paths = [
-        "sentence really",
-        "word",
-        "Https://arrr",
-    ]
-
-    for p in paths:
-        res = disc.is_absolute_path(p)
-        print(p)
         assert not res and res is not None
 
 

@@ -8,6 +8,12 @@ class MediaType(enum.Enum):
     Unknown = enum.auto()
 
 
+class MediaStatus(enum.Enum):
+    Good = enum.auto()
+    Bad = enum.auto()
+    Unknown = enum.auto()
+
+
 class MediaPath:
     def __init__(self, path: str = None):
         self.path = path

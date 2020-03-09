@@ -15,3 +15,15 @@ def test_pathtype():
     test_url = mediapath.MediaPath("http://test.com/arrr.mkv")
 
     assert test_url.type == mediapath.MediaType.Url
+
+
+def test_mediatypes():
+    assert mediapath.MediaType.Path is not None
+    assert mediapath.MediaType.Url is not None
+    assert mediapath.MediaType.Unknown is not None
+
+
+def test_mediastatus():
+    assert mediapath.MediaStatus.Good is not None
+    assert mediapath.MediaStatus.Bad is not None
+    assert mediapath.MediaStatus.Unknown is not None

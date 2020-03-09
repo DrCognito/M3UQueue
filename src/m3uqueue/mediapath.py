@@ -41,6 +41,6 @@ class MediaPath:
         elif self.type == MediaType.Path:
             pass
         else:
-            raise TypeError(f"Unkown MediaType {self._type}")
+            raise TypeError(f"Unknown MediaType {self._type}")
 
         return self.status

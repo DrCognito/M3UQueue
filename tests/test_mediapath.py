@@ -1,4 +1,5 @@
 from m3uqueue import mediapath
+import pytest
 
 
 def test_pathadd():
@@ -32,6 +33,17 @@ def test_statusurls():
 
     assert test_1.status == mediapath.MediaStatus.Good
     assert test_2.status == mediapath.MediaStatus.Bad
+
+
+def test_status_unknownfails():
+    dummy = ""
+    test_1 = mediapath.MediaPath(dummy)
+    test_1._type = mediapath.MediaType.Unknown
+
+    with pytest.raises(TypeError) as excinfo:
+        test_1.update_status()
+
+    assert str(excinfo.value).startswith("Unknown MediaType")
 
 
 def test_mediatypes():

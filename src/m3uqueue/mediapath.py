@@ -8,10 +8,10 @@ class MediaType(enum.Enum):
     Unknown = enum.auto()
 
 
-class MediaPath():
+class MediaPath:
     def __init__(self, path: str = None):
         self.path = path
-        self._type : MediaType = None
+        self._type: MediaType = None
 
     @property
     def type(self):
@@ -24,4 +24,3 @@ class MediaPath():
             self._type = MediaType.Path
 
         return self._type
-

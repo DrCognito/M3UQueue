@@ -1,5 +1,6 @@
 import enum
 import m3uqueue.discriminators as disc
+import pathlib
 
 
 class MediaType(enum.Enum):
@@ -19,6 +20,7 @@ class MediaPath:
         self.path = path
         self._type: MediaType = None
         self.status = MediaStatus.Unknown
+        self.base_dir = pathlib.Path("./")
 
     @property
     def type(self):
@@ -39,7 +41,12 @@ class MediaPath:
             else:
                 self.status = MediaStatus.Bad
         elif self.type == MediaType.Path:
-            pass
+            if pathlib.Path(self.path).exists():
+                self.status = MediaStatus.Good
+            elif (self.base_dir / self.path).exists():
+                self.status = MediaStatus.Good
+            else:
+                self.status = MediaStatus.Bad
         else:
             raise TypeError(f"Unknown MediaType {self._type}")
 

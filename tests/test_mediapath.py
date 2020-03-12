@@ -1,5 +1,75 @@
 from m3uqueue import mediapath
 import pytest
+import pathlib
+import io
+
+
+def prepare_m3u(file_name):
+    file_path = pathlib.Path(file_name)
+    with open("file_name", "r") as file:
+        data = file.read()
+
+    # parents[0] should give the absolute path-directory of the file
+    abs_path = file_path.absolute().parents[0]
+    data.replace(r"{full_path}", abs_path)
+
+    return io.StringIO(data)
+
+
+def test_abspath():
+    path_1 = str(pathlib.Path("./tests/test_files/text1.txt").absolute())
+    test_1 = mediapath.MediaPath(path_1)
+
+    path_2 = str(pathlib.Path("./tests/test_files/nofile_none.none").absolute())
+    test_2 = mediapath.MediaPath(path_2)
+
+    assert test_1.status == mediapath.MediaStatus.Unknown
+    assert test_2.status == mediapath.MediaStatus.Unknown
+
+    test_1.update_status()
+    test_2.update_status()
+
+    assert test_1.status == mediapath.MediaStatus.Good
+    assert test_2.status == mediapath.MediaStatus.Bad
+
+
+def test_relpath():
+    # Base path should be module dir
+    path_1 = "LICENSE.txt"
+    path_2 = "tests/test_files/text1.txt"
+    path_3 = "notvalid.none"
+    path_4 = "tests/test_files/notvalid.none"
+
+    test_1 = mediapath.MediaPath(path_1)
+    test_2 = mediapath.MediaPath(path_2)
+    test_3 = mediapath.MediaPath(path_3)
+    test_4 = mediapath.MediaPath(path_4)
+
+    test_1.update_status()
+    test_2.update_status()
+    test_3.update_status()
+    test_4.update_status()
+
+    assert test_1.status == mediapath.MediaStatus.Good
+    assert test_2.status == mediapath.MediaStatus.Good
+    assert test_3.status == mediapath.MediaStatus.Bad
+    assert test_4.status == mediapath.MediaStatus.Bad
+
+
+def test_changebasedir():
+    path_1 = "LICENSE.txt"
+    test_1 = mediapath.MediaPath(path_1)
+    test_1.update_status()
+    assert test_1.status == mediapath.MediaStatus.Good
+
+    test_1.base_dir = pathlib.Path("./tests/test_files/")
+    test_1.path = "text1.txt"
+    test_1.update_status()
+    assert test_1.status == mediapath.MediaStatus.Good
+
+    test_1.path = "not a proper path ~~#"
+    test_1.update_status()
+    assert test_1.status == mediapath.MediaStatus.Bad
 
 
 def test_pathadd():

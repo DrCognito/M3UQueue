@@ -51,3 +51,5 @@ MANIFEST
 
 # VS code
 .vscode/*
+
+tests/test_files/test.m3u

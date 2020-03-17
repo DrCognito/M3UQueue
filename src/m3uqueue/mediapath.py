@@ -1,6 +1,7 @@
 import enum
 import m3uqueue.discriminators as disc
 import pathlib
+from typing import List
 
 
 class MediaType(enum.Enum):
@@ -51,3 +52,14 @@ class MediaPath:
             raise TypeError(f"Unknown MediaType {self._type}")
 
         return self.status
+
+
+def loadm3u(text: str) -> List[MediaPath]:
+    output = []
+    for line in text.splitlines():
+        if line.startswith(r"#"):
+            continue
+
+        output.append(MediaPath(line))
+
+    return output

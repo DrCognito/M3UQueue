@@ -1,19 +1,7 @@
 from m3uqueue import mediapath
 import pytest
 import pathlib
-import io
-
-
-def prepare_m3u(file_name):
-    file_path = pathlib.Path(file_name)
-    with open("file_name", "r") as file:
-        data = file.read()
-
-    # parents[0] should give the absolute path-directory of the file
-    abs_path = file_path.absolute().parents[0]
-    data.replace(r"{full_path}", abs_path)
-
-    return io.StringIO(data)
+from typing import List
 
 
 def test_abspath():
@@ -126,3 +114,14 @@ def test_mediastatus():
     assert mediapath.MediaStatus.Good is not None
     assert mediapath.MediaStatus.Bad is not None
     assert mediapath.MediaStatus.Unknown is not None
+
+
+def test_loadm3u(m3upath):
+    with open(m3upath, "r") as file:
+        m3u_text = file.read()
+
+    assert r"{full_path}" not in m3u_text
+
+    media_list = mediapath.loadm3u(m3u_text)
+
+    assert len(media_list) == 6
